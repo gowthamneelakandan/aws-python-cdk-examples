@@ -44,7 +44,7 @@ class awscloudwatchservice(core.Stack):
 		
   ## Cloudwatch for triggering lambda
   ##create object for lambda function
-  archive_lambda_arn = _lambda.Function.from_function_arn(
+  lambda_arn = _lambda.Function.from_function_arn(
       self,
       'stack_name',
       'lambda ARN')
@@ -54,8 +54,8 @@ class awscloudwatchservice(core.Stack):
 
   cw_archiving_trigger = _events.Schedule.cron(day=None, hour="20", minute="0", month=None, week_day=None, year=None)
 
-  event_lambda_target1 = _events_targets.LambdaFunction(handler=archive_lambda_arn, event=job_parameter1)
-  event_lambda_target2 = _events_targets.LambdaFunction(handler=archive_lambda_arn, event=job_parameter2)
+  event_lambda_target1 = _events_targets.LambdaFunction(handler=lambda_arn, event=job_parameter1)
+  event_lambda_target2 = _events_targets.LambdaFunction(handler=lambda_arn, event=job_parameter2)
   cloudwatch_event2 = _events.Rule(
       self,
       "stack_name",
@@ -64,3 +64,17 @@ class awscloudwatchservice(core.Stack):
       enabled=True,
       schedule=cw_archiving_trigger,
       targets=[event_lambda_target1,event_lambda_target2])
+	
+  ## create log group
+  theobald_log_group = _logs.LogGroup(
+      self, 
+      'stack_name',
+      log_group_name='log_group_name'
+  )
+  ## create cloudwatch filter
+  theobald_log_group.add_subscription_filter(
+      self
+      "stack_name", 
+      destination=_logs_destinations.LambdaDestination(lambda_arn),
+      filter_pattern=_logs.FilterPattern().any_term("(POST)", "(GET)", "(PUT)", "Writing results to destination completed")
+  )
