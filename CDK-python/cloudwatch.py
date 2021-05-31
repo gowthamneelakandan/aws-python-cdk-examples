@@ -26,12 +26,12 @@ from aws_cdk import (
 import os, boto3, json
 
 class awscloudwatchservice(core.Stack):
-	## Read local variable from JSON file
-	cleansed_bucket = self.node.try_get_context("cleansed_bucket")
+  ## Read local variable from JSON file
+  cleansed_bucket = self.node.try_get_context("cleansed_bucket")
 	
-	## Cloudwatch for triggering step function
-	## Timezone followed by AWS-Cloudwatch is UTC
-	step_schedule = _events.Schedule.cron(day=None, hour="23", minute="0", month=None, week_day=None, year=None)
+  ## Cloudwatch for triggering step function
+  ## Timezone followed by AWS-Cloudwatch is UTC
+  step_schedule = _events.Schedule.cron(day=None, hour="23", minute="0", month=None, week_day=None, year=None)
   event_step_target = _events_targets.SfnStateMachine(machine = stepFunction)
   cloudwatch_event1 = _events.Rule(
       self,
@@ -42,15 +42,15 @@ class awscloudwatchservice(core.Stack):
       schedule=step_schedule,
       targets=[event_step_target])
 		
-	## Cloudwatch for triggering lambda
-	##create object for lambda function
-	archive_lambda_arn = _lambda.Function.from_function_arn(
-		self,
-    'stack_name',
-    'lambda ARN')
+  ## Cloudwatch for triggering lambda
+  ##create object for lambda function
+  archive_lambda_arn = _lambda.Function.from_function_arn(
+      self,
+      'stack_name',
+      'lambda ARN')
     
-	job_parameter1 = _events.RuleTargetInput.from_object('{"parm1": "parm1_value","parm2":"parm2_value","parm3": "parm3_value","parm4": "parm4_value"}')
-	job_parameter2 = _events.RuleTargetInput.from_object('{"parm1": "parm1_value","parm2":"parm2_value","parm3": "parm3_value","parm4": "parm4_value"}')
+  job_parameter1 = _events.RuleTargetInput.from_object('{"parm1": "parm1_value","parm2":"parm2_value","parm3": "parm3_value","parm4": "parm4_value"}')
+  job_parameter2 = _events.RuleTargetInput.from_object('{"parm1": "parm1_value","parm2":"parm2_value","parm3": "parm3_value","parm4": "parm4_value"}')
 
   cw_archiving_trigger = _events.Schedule.cron(day=None, hour="20", minute="0", month=None, week_day=None, year=None)
 
