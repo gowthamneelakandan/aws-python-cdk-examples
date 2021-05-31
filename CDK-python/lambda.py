@@ -26,7 +26,7 @@ from aws_cdk import (
 
 import os, boto3, json
 
-class awscloudwatchservice(core.Stack):
+class awslambdaservice(core.Stack):
   ## Read local variable from JSON file
   cleansed_bucket = self.node.try_get_context("cleansed_bucket")
   ## configure VPC
