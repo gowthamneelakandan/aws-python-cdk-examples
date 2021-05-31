@@ -26,14 +26,9 @@ from aws_cdk import (
 import os, boto3, json
 
 class awsglueservice(core.Stack):
-  ## Read local variable from JSON file
-  cleansed_bucket = self.node.try_get_context("cleansed_bucket")
   
-  ## Create object for S3 bcuekt
-  cleansed_bucket_obj = s3.Bucket.from_bucket_name(
-							self, 'cleansed_bucket',
-							cleansed_bucket
-		)
+## Read local variable from JSON file
+  cleansed_bucket = self.node.try_get_context("cleansed_bucket")
   
   ## Create glue classifier
   glue_classifier = _glue.CfnClassifier(self, 'json-classifiers',json_classifier = _glue.CfnClassifier.JsonClassifierProperty(json_path ="$[*]", name = "json-classifiers"))
