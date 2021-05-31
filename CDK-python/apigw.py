@@ -30,15 +30,15 @@ class awsapigwservice(core.Stack):
   cleansed_bucket = self.node.try_get_context("cleansed_bucket")
   ## policy for API-GW
   apigw_policy = _iam.PolicyDocument(
-		 statements=[
-		    _iam.PolicyStatement(
-           principals=[_iam.AnyPrincipal()],
-           actions=["execute-api:Invoke"],
-           resources=[core.Fn.join("", ["execute-api:/", "*"])],
-           effect=_iam.Effect.ALLOW,
-           sid="AllowVPCAccessToApi"
-         )
-		 ]
+        statements=[
+		_iam.PolicyStatement(
+                	principals=[_iam.AnyPrincipal()],
+                	actions=["execute-api:Invoke"],
+                	resources=[core.Fn.join("", ["execute-api:/", "*"])],
+                	effect=_iam.Effect.ALLOW,
+                	sid="AllowVPCAccessToApi"
+         	)
+	]
   )
   
   ##create object for lambda function
@@ -49,20 +49,20 @@ class awsapigwservice(core.Stack):
   
   ## Create API-GW
   base_api = _apigw.LambdaRestApi(self, 'dsm-dap-apigw-common-provisioning-event-triggering',
-			endpoint_configuration = _apigw.EndpointConfiguration(
-			  types = [_apigw.EndpointType.PRIVATE],
-			  vpc_endpoints = [_ec2.InterfaceVpcEndpoint.from_interface_vpc_endpoint_attributes(
-          self, 
-          'stack_name',
-			    port = 443,
-			    vpc_endpoint_id = "vpc_id",
-			    security_group_id = "security_group_id"
-			  )]
-			),
-			policy = apigw_policy,
-			proxy = False,
-			deploy_options = {'stage_name': 'v1'},
-			rest_api_name = 'api_ge_name',
-			description = 'description',
-			handler = event_triggering_lambda
+        endpoint_configuration = _apigw.EndpointConfiguration(
+                types = [_apigw.EndpointType.PRIVATE],
+		vpc_endpoints = [_ec2.InterfaceVpcEndpoint.from_interface_vpc_endpoint_attributes(
+          		self, 
+          		'stack_name',
+			port = 443,
+			vpc_endpoint_id = "vpc_id",
+			security_group_id = "security_group_id"
+		)]
+	),
+	policy = apigw_policy,
+	proxy = False,
+	deploy_options = {'stage_name': 'v1'},
+	rest_api_name = 'api_ge_name',
+	description = 'description',
+	handler = event_triggering_lambda
   )
