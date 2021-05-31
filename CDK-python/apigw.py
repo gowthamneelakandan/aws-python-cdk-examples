@@ -66,3 +66,9 @@ class awsapigwservice(core.Stack):
 	description = 'description',
 	handler = event_triggering_lambda
   )
+  
+  ## Create method and event
+  event = base_api.root.add_resource('event')
+  event_public = base_api_public.root.add_resource('event')
+  event.add_method('POST')
+  event_public.add_method('POST')
