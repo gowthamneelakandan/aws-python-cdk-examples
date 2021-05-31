@@ -1,4 +1,4 @@
-# aws-pythin-cdk-example
+# aws-python-cdk-example
 Python Code for AWS
 
 1. CDK-Python
