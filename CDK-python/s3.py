@@ -30,16 +30,16 @@ class awss3service(core.Stack):
   
   ## Create object for S3 bcuekt
   bucket_name_obj = s3.Bucket.from_bucket_name(
-							self, 'bucket_name',
-							bucket_name
-	)
+      self, 'bucket_name',
+      bucket_name
+      )
   
   #upload whl files  
-	s3deploy.BucketDeployment(
-		self, 
-		'stack_name',
-		sources = [s3deploy.Source.asset("assets/glue/")],
-		destination_bucket = bucket_name_obj, ## s3 bucket name passed as object
-		destination_key_prefix = "folder_path in s3",
-	)
+  s3deploy.BucketDeployment(
+      self, 
+      'stack_name',
+      sources = [s3deploy.Source.asset("assets/glue/")],
+      destination_bucket = bucket_name_obj, ## s3 bucket name passed as object
+      destination_key_prefix = "folder_path in s3",
+      )
   
