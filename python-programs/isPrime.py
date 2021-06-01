@@ -9,3 +9,16 @@ def isPrime(i):
       print("Prime")
       
 isPrime(i)  
+
+lower = 3
+upper = 29
+def isPrimeLimit(lower,upper):
+  for num in range(lower,upper + 1):
+    if num > 1:
+      for i in range(2,num):
+        if (num % i) == 0:
+          break
+        else:
+          print(num)
+          
+isPrimeLimit(lower,upper)
