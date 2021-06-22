@@ -52,7 +52,12 @@ class awsglueservice(core.Stack):
       database_name = "database_name",
       table_prefix = "prefix_" 
       )
-  
+  ## create connection
+  conn_prop = { "JDBC_CONNECTION_URL": "jdbc:oracle:thin://@endpoint:1521:SID","USERNAME" : "username","PASSWORD":"password" }
+  phy_conn_prop = CfnConnection.PhysicalConnectionRequirementsProperty(availability_zone = 'eu-west-1a', security_group_id_list=['sg_name'], subnet_id= 'subnet_name')
+  conn_inp_prop = CfnConnection.ConnectionInputProperty(connection_properties=conn_prop, connection_type = 'JDBC', description='glue-connection-creation',name='glue-connection-creation',physical_connection_requirements=phy_conn_prop)
+  conne_creation = _glue.CfnConnection(self, 'glue-connection-creation',catalog_id='aws_account_number',connection_input=conn_inp_prop)
+
   ## Create GLUE
   glue_job1 = _glue.CfnJob(
       self,
@@ -65,6 +70,9 @@ class awsglueservice(core.Stack):
             name='glueetl',
             python_version = "3",
             script_location="s3path of script location"
+      ),
+      connections = _glue.CfnJob.ConnectionsListProperty(
+                connections=['connection_name']
       ),
       execution_property = _glue.CfnJob.ExecutionPropertyProperty(
             max_concurrent_runs=100
