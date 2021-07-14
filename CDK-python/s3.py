@@ -27,14 +27,17 @@ import os, boto3, json
 class awss3service(core.Stack):
   ## Read local variable from JSON file
   bucket_name = self.node.try_get_context("bucket_name")
-  
-  ## Create object for S3 bcuekt
+	
+  ## Create S3 bucket
+  create_bucket = s3.CfnBucket(self,'Bucket_name',bucket_name="Bucket_name")
+	
+  ## Create object for S3 bucket
   bucket_name_obj = s3.Bucket.from_bucket_name(
       self, 'bucket_name',
       bucket_name
       )
   
-  #upload whl files  
+  #upload files  
   s3deploy.BucketDeployment(
       self, 
       'stack_name',
