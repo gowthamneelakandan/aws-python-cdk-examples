@@ -1,0 +1,16 @@
+jupyter in windows
+pip install --upgrade pip or pip install --upgrade pip --user
+pip install jupyterlab or pip install jupyterlab --user
+pip install notebook or pip install notebook --user
+pip install jupyter or pip install jupyter --user
+
+jupyter notebook or python -m notebook
+
+
+jupyter notebook --generate-config
+C:\Users\username\.jupyter\jupyter_notebook_config.py
+search for #c.NotebookApp.notebook_dir = ''
+replace for c.NotebookApp.notebook_dir = 'C:/the/path/to/home/folder/'
+Make sure you use forward slashes in your path , backslashes could be used if placed in double quotes even if folder name contains spaces as such : "D:\yourUserName\Any Folder\More Folders\"
+Remove the # at the beginning of the line to allow the line to execute. Save the file
+Open cmd (or Anaconda Prompt) and run jupyter lab. You will see your home directory being set to the new path.
